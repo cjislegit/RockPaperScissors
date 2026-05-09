@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var currentChoice = ["rock", "paper", "scissors"].shuffled()
+    @State var win = Bool.random()
+    
     var body: some View {
         VStack {
             Image(systemName: "globe")
