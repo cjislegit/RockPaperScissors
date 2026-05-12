@@ -7,6 +7,20 @@
 
 import SwiftUI
 
+struct Title: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .font(.largeTitle.bold())
+            .foregroundColor(.white)
+    }
+}
+
+extension View {
+    func titleStyle() -> some View {
+        modifier(Title())
+    }
+}
+
 struct ContentView: View {
     @State var currentChoice = ["🪨", "🧻", "✂️"].shuffled()
     @State var shouldWin = Bool.random()
@@ -23,9 +37,10 @@ struct ContentView: View {
             ], startPoint: .top, endPoint: .bottom)
             
             VStack {
+                Spacer()
+                
                 Text("Rock, Paper Scissors")
-                    .foregroundStyle(.white)
-                    .font(.largeTitle.bold())
+                    .titleStyle()
                 
                 VStack(spacing: 10) {
                     VStack {
@@ -39,18 +54,32 @@ struct ContentView: View {
                     
                     ForEach(currentChoice, id: \.self) { choice in
                         Button {
-                            print(choice)
+//                            print(choice)
+                            buttonTapped(choice)
                         } label: {
                             Text("\(choice)")
                                 .font(.system(size: 90))
                         }
                     }
                 }
+                .padding(.vertical, 20)
+                
+                Spacer()
+                Spacer()
+                
+                Text("Score: 0")
+                    .titleStyle()
+                
+                Spacer()
             }
             .padding()
         }
         .ignoresSafeArea()
     }
+}
+
+func buttonTapped(_ button: String) {
+    print(button)
 }
 
 
