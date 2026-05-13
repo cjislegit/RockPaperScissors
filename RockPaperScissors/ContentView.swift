@@ -76,13 +76,32 @@ struct ContentView: View {
         }
         .ignoresSafeArea()
     }
+    
+    func buttonTapped(_ button: String) {
+        if shouldWin {
+            if button == "🪨" && currentChoice.first! == "✂️" {
+                print("Correct!")
+            } else if currentChoice.first! == "🪨" && button == "🧻" {
+                print("Correct!!!!!!!")
+            } else if currentChoice.first! == "🧻" && button == "✂️" {
+                print("Correct!!!!")
+            } else {
+                print("Wrong")
+            }
+        } else {
+            if currentChoice.first! == "✂️" && button == "🧻" {
+                print("Correct!!!!")
+            } else if currentChoice.first! == "🪨" && button == "✂️" {
+                print("Correct!!!!!!!")
+            } else if currentChoice.first! == "🧻" && button == "🪨" {
+                print("Correct!!!!")
+            } else {
+                print("Wrong!!")
+            }
+        }
+    }
+    
 }
-
-func buttonTapped(_ button: String) {
-    print(button)
-}
-
-
 
 #Preview {
     ContentView()
