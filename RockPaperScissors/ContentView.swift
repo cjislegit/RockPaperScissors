@@ -79,24 +79,18 @@ struct ContentView: View {
     
     func buttonTapped(_ button: String) {
         if shouldWin {
-            if button == "🪨" && currentChoice.first! == "✂️" {
-                print("Correct!")
-            } else if currentChoice.first! == "🪨" && button == "🧻" {
-                print("Correct!!!!!!!")
-            } else if currentChoice.first! == "🧻" && button == "✂️" {
-                print("Correct!!!!")
-            } else {
+            switch (button, currentChoice.first!) {
+                case ("🪨", "✂️"), ("🧻", "🪨"), ("✂️", "🧻"):
+                print("Correct!!")
+            default:
                 print("Wrong")
             }
         } else {
-            if currentChoice.first! == "✂️" && button == "🧻" {
-                print("Correct!!!!")
-            } else if currentChoice.first! == "🪨" && button == "✂️" {
-                print("Correct!!!!!!!")
-            } else if currentChoice.first! == "🧻" && button == "🪨" {
-                print("Correct!!!!")
-            } else {
-                print("Wrong!!")
+            switch (button, currentChoice.first!) {
+            case ("✂️", "🪨"), ("🪨", "🧻"), ("🧻", "✂️"):
+                print("Correct!!")
+            default:
+                print("Wrong")
             }
         }
     }
