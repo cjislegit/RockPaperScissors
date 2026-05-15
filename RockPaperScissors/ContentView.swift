@@ -24,6 +24,11 @@ extension View {
 struct ContentView: View {
     @State var currentChoice = ["🪨", "🧻", "✂️"].shuffled()
     @State var shouldWin = Bool.random()
+    @State private var showingScore = false
+    @State private var scoreTitle = ""
+    @State private var score = 0
+    @State private var round = 1
+    @State private var gameOver = false
     
     
     var body: some View {
@@ -35,6 +40,7 @@ struct ContentView: View {
                 Color(red: 0.29, green: 0.36, blue: 0.04),
                 Color(red: 0.15, green: 0.24, blue: 0.02)
             ], startPoint: .top, endPoint: .bottom)
+            .ignoresSafeArea()
             
             VStack {
                 Spacer()
@@ -54,7 +60,6 @@ struct ContentView: View {
                     
                     ForEach(currentChoice, id: \.self) { choice in
                         Button {
-//                            print(choice)
                             buttonTapped(choice)
                         } label: {
                             Text("\(choice)")
@@ -67,32 +72,66 @@ struct ContentView: View {
                 Spacer()
                 Spacer()
                 
-                Text("Score: 0")
+                Text("Score: \(score)")
                     .titleStyle()
                 
                 Spacer()
             }
             .padding()
         }
-        .ignoresSafeArea()
+        
+        .alert(scoreTitle, isPresented: $showingScore) {
+            Button("Play Again", action: askQuestion)
+        } message: {
+            Text("Your Score is \(score)")
+        }
+        
+        .alert(Text("Game Over"), isPresented: $gameOver) {
+            Button("Restart", action: restart)
+        } message: {
+        Text("You scored \(score)")
+        }
+        
     }
     
     func buttonTapped(_ button: String) {
         if shouldWin {
             switch (button, currentChoice.first!) {
                 case ("🪨", "✂️"), ("🧻", "🪨"), ("✂️", "🧻"):
-                print("Correct!!")
+                scoreTitle = "Correct!!"
+                score += 1
             default:
-                print("Wrong")
+                 scoreTitle = "Wrong"
             }
         } else {
             switch (button, currentChoice.first!) {
             case ("✂️", "🪨"), ("🪨", "🧻"), ("🧻", "✂️"):
-                print("Correct!!")
+                scoreTitle = "Correct!!"
+                score += 1
             default:
-                print("Wrong")
+                scoreTitle = "Wrong"
             }
         }
+        
+        if round == 5 {
+            gameOver = true
+        } else {
+            showingScore = true
+        }
+    }
+    
+    func askQuestion() {
+        currentChoice.shuffle()
+        shouldWin = Bool.random()
+        round += 1
+        
+    }
+    
+    func restart() {
+        score = 0
+        round = 1
+        gameOver = false
+        askQuestion()
     }
     
 }
